@@ -3,51 +3,43 @@ public class Rot13
     public final static char[] arrayChar = 
     {
         'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 
-        'n', 'ñ', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
-        'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm'
+        'n', 'ñ', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'
     };
+
     public final static char[] arrayCharUpper = 
     {
         'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 
-        'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-        'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M'
+        'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
     };
 
-    public static char SwapChar(char c, int type)
+    public static char swapCharDes(char c, char[] array)
     {
-        for(int i = 0; i < arrayCharUpper.length; i++)
+        for(int i = array.length - 1; i >= 0; i--)
         {
-            if(type == 1)
+            if(c == array[i])
             {
-                if(c == arrayCharUpper[i])
-                {
-                    c = arrayCharUpper[ i+ 13];
-                    return (c);
-                }
+                if (i - 13 >= 0)
+                    c = array[i - 13];
+                else
+                    c = array[i + array.length - 13]; 
+                return (c);
             }
-            else if(type == 2)
+        }
+        return (c);
+    }
+
+    public static char swapChar(char c, char[] array)
+    {
+       
+        for(int i = 0; i < array.length; i++)
+        {
+            if(c == array[i])
             {
-                if(c == arrayCharUpper[i])
-                {
-                    c = arrayCharUpper[i- 13];
-                    return (c);
-                }
-            }
-            else if(type == 3)
-            {
-                if(c == arrayChar[i])
-                {
-                    c = arrayChar[i - 13];
-                    return (c);
-                }
-            }
-            else
-            {
-                if(c == arrayChar[i])
-                {
-                    c = arrayChar[i + 13];
-                    return (c);
-                }
+                if (i + 13 < array.length)
+                    c = array[i + 13];
+                else
+                    c = array[i - array.length + 13];
+                return (c);
             }
         }
         return (c);
@@ -59,36 +51,29 @@ public class Rot13
         for(int i = 0; i < message.length(); i++)
         {
             if(Character.isUpperCase(message.charAt(i)))
-            {
-                newString += SwapChar(message.charAt(i), 1);
-            }
+                newString += swapChar(message.charAt(i), arrayCharUpper);
             else
-            {
-                newString += SwapChar(message.charAt(i), 0);
-            }
+                newString += swapChar(message.charAt(i), arrayChar);
         }
         return (newString);
     }
+    
     public static String desxifraRot13(String message)
     {
         String newString = "";
         for(int i = 0; i < message.length(); i++)
         {
             if(Character.isUpperCase(message.charAt(i)))
-            {
-                newString += swapChar(message.charAt(i), 2);
-            }
+                newString += swapCharDes(message.charAt(i), arrayCharUpper);
             else
-            {
-                newString += swapChar(message.charAt(i), 3);
-            }
+                newString += swapCharDes(message.charAt(i), arrayChar);
         }
         return (newString);
     }
 
     public static void main(String args[])
     {
-        String test = xifraRot13("TbXn ÑbZ PuN");
+        String test = xifraRot13("aAaA AaAa");
         System.out.println(test);
         test = desxifraRot13(test);
         System.out.println(test);
