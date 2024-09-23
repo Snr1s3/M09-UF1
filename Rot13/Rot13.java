@@ -2,18 +2,16 @@ public class Rot13{
     public final static char[] arrayChar = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'ñ', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
     public final static char[] arrayCharUpper = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
     public static char swapChar(char c, char[] array, boolean bool){
-        if(bool){
+        if(bool)
             for(int i = 0; i < array.length; i++){
                 if(c == array[i])
                     return ((i + 13 < array.length) ? array[i + 13] : array[i - array.length + 13]);
             }
-        }
-        else{
-            for(int i = array.length - 1; i >= 0; i--){
-                if(c == array[i])
-                    return ((i - 13 >= 0) ? array[i - 13] : array[i + array.length - 13]);
+        else
+            for(int o = array.length - 1; o >= 0; o--){
+                if(c == array[o])
+                    return ((o - 13 >= 0) ? array[o - 13] : array[o + array.length - 13]);
             }
-        }
         return (c);
     }
     public static String xifraRot13(String message){
