@@ -33,7 +33,7 @@ public class Rot13{
         int num = (args.length >= 2 && args[1] != null && args[1].matches("[0-9]+") && Integer.parseInt(args[1])<= arrayChar.length-1) ? Integer.parseInt(args[1]) : 13;
         test = xifraRot13(test, num).toString();
         System.out.println(test);
-        System.out.println(desxifraRot13(test, num).toString());
+        System.out.println(desxifraRot13(test, num).toString()+"\n");
     }
     public static void forcaBrutaRotX(String args[]){
         String test = (args.length >= 1) ? args[0] : "TEST: Bon Dia";
