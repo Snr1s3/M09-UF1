@@ -1,2 +1,2 @@
-# Ignore all .java files
+# Ignore all .class files
 *.class
