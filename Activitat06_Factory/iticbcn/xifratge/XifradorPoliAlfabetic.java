@@ -1,9 +1,10 @@
+package iticbcn.xifratge;
 import java.util.Collections;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class PoliAlfabetic{
+public class XifradorPoliAlfabetic{
 
     public final static char[] arrayChar = "abcdefghijklmnopqrstuvwxyzñáéíóúüàèìòùâêîôûäëïöüç".toCharArray();
     public static char[] shuffledArray = new char[arrayChar.length];

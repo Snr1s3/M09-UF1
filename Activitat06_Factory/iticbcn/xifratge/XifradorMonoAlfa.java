@@ -1,31 +1,20 @@
+package iticbcn.xifratge;
 import java.util.Collections;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Random;
 
-public class PoliAlfabetic{
-
+public class XifradorMonoAlfa implements Xifrador{
     public final static char[] arrayChar = "abcdefghijklmnopqrstuvwxyzñáéíóúüàèìòùâêîôûäëïöüç".toCharArray();
-    public static char[] shuffledArray = new char[arrayChar.length];
-    public static Long clauSecreta = 123456789L;
-    public static Random random; 
-
-
-    public static void initRandom(){
-        random = new Random(clauSecreta);
-    } 
-    public static char[] permutaAlfabet(char[] shuffled){
+    public static char[] permutaAlfabet(){
         List<Character> charList = new ArrayList<>();
-        for (char c : shuffled) {
+        for (char c : arrayChar) {
             charList.add(c);
         }
-        Collections.shuffle(charList, random);
+        Collections.shuffle(charList);
         char[] shuffledArray = new char[charList.size()];
         for (int i = 0; i < charList.size(); i++) {
             shuffledArray[i] = charList.get(i);
-            //System.out.print(shuffledArray[i]);
         }
-        //System.out.println();
         return (shuffledArray);
     } 
     public static char swapChar(char c, char[] shuffled, boolean bool){
@@ -41,8 +30,7 @@ public class PoliAlfabetic{
             }
         return (c);
     }
-    public static String xifraPoliAlfa(String message){
-        char[] shuffledArray = permutaAlfabet(arrayChar);
+    public static String xifraMonoAlfa(String message, char[] shuffledArray){
         StringBuffer newString = new StringBuffer();
         for(int i = 0; i < message.length(); i++){
             char c = message.charAt(i);
@@ -52,12 +40,10 @@ public class PoliAlfabetic{
             else{
                 newString.append(swapChar(c, shuffledArray, true));
             }
-            shuffledArray = permutaAlfabet(shuffledArray);
         }
         return (newString.toString());
     }
-    public static String desxifraPoliAlfa(String message){
-        char[] shuffledArray = permutaAlfabet(arrayChar);
+    public static String desxifraMonoAlfa(String message, char[] shuffledArray){
         StringBuffer newString = new StringBuffer();
         for(int i = 0; i < message.length(); i++){
             char c = message.charAt(i);
@@ -67,27 +53,15 @@ public class PoliAlfabetic{
             else{
                 newString.append(swapChar(c, shuffledArray, false));
             }
-            shuffledArray = permutaAlfabet(shuffledArray);
         }
         return (newString.toString());
     }
-
-    public static void main ( String [] args ) {
-        String msgs[] = { "Test 01 àrbritre, coixí, Perímetre" ,
-            "Test 02 Taüll, DÍA, año" ,
-            "Test 03 Peça, Òrrius, Bòvila" };
-        String msgsXifrats [] = new String [ msgs. length ];
-        System . out . println ( "Xifratge: \n --------" );
-        for ( int i = 0; i < msgs. length ; i ++) {
-            initRandom();
-            msgsXifrats [ i ] = xifraPoliAlfa ( msgs[ i ]);
-            System . out . printf ( "%-34s -> %s%n", msgs[ i ], msgsXifrats [ i ]);
-        }
-        System . out . println ( "Desxifratge: \n -----------" );
-        for ( int i = 0; i < msgs. length ; i ++) {
-            initRandom();
-            String msg = desxifraPoliAlfa ( msgsXifrats [ i ]);
-            System . out . printf ( "%-34s -> %s%n", msgsXifrats [ i ], msg);
-        }
+    public static void main(String args[]){
+        String test = (args.length == 1) ? args[0] : "TEST: Bon Dia";
+        char[] shuffledArray = permutaAlfabet();
+        test = xifraMonoAlfa(test, shuffledArray);
+        System.out.println(test);
+        test = desxifraMonoAlfa(test, shuffledArray);
+        System.out.println(test);
     }
 }
