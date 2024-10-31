@@ -16,16 +16,10 @@ public class MonoAlfa{
         }
         return (shuffledArray);
     } 
-    public static char swapChar(char c, char[] shuffled, boolean bool){
-        if(bool)
+    public static char swapChar(char c, char[] shuffled){
             for(int i = 0; i < arrayChar.length; i++){
                 if(c == arrayChar[i])
                     return (shuffled[i]);
-            }
-        else
-            for(int o = shuffled.length - 1; o >= 0; o--){
-                if(c == shuffled[o])
-                    return (arrayChar[o]);
             }
         return (c);
     }
@@ -34,10 +28,10 @@ public class MonoAlfa{
         for(int i = 0; i < message.length(); i++){
             char c = message.charAt(i);
             if(Character.isUpperCase(c)){
-                newString.append(Character.toUpperCase(swapChar(Character.toLowerCase(c), shuffledArray, true)));
+                newString.append(Character.toUpperCase(swapChar(Character.toLowerCase(c), shuffledArray)));
             }
             else{
-                newString.append(swapChar(c, shuffledArray, true));
+                newString.append(swapChar(c, shuffledArray));
             }
         }
         return (newString.toString());
@@ -47,10 +41,10 @@ public class MonoAlfa{
         for(int i = 0; i < message.length(); i++){
             char c = message.charAt(i);
             if(Character.isUpperCase(c)){
-                newString.append(Character.toUpperCase(swapChar(Character.toLowerCase(c), shuffledArray, false)));
+                newString.append(Character.toUpperCase(swapChar(Character.toLowerCase(c), shuffledArray)));
             }
             else{
-                newString.append(swapChar(c, shuffledArray, false));
+                newString.append(swapChar(c, shuffledArray));
             }
         }
         return (newString.toString());

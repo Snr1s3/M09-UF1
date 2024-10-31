@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class XifradorPoliAlfabetic{
+public class XifradorPoliAlfabetic implements Xifrador{
 
     public final static char[] arrayChar = "abcdefghijklmnopqrstuvwxyzñáéíóúüàèìòùâêîôûäëïöüç".toCharArray();
     public static char[] shuffledArray = new char[arrayChar.length];

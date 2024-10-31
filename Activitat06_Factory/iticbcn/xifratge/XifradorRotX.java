@@ -1,5 +1,5 @@
 package iticbcn.xifratge;
-public class XifradorRotX{
+public class XifradorRotX implements Xifrador{
     public final static char[] arrayChar = "abcdefghijklmnopqrstuvwxyzñáéíóúüàèìòùâêîôûäëïöüç".toCharArray();
     public final static char[] arrayCharUpper = "ABCDEFGHIJKLMNOPQRSTUVWXYZÑÁÉÍÓÚÜÀÈÌÒÙÂÊÎÔÛÄËÏÖÜÇ".toCharArray();
     public static char swapChar(char c, char[] array, boolean bool, int num){
