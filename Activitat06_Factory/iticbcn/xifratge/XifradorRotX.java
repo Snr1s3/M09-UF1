@@ -2,40 +2,71 @@ package iticbcn.xifratge;
 public class XifradorRotX implements Xifrador{
     public final static char[] arrayChar = "abcdefghijklmnopqrstuvwxyzñáéíóúüàèìòùâêîôûäëïöüç".toCharArray();
     public final static char[] arrayCharUpper = "ABCDEFGHIJKLMNOPQRSTUVWXYZÑÁÉÍÓÚÜÀÈÌÒÙÂÊÎÔÛÄËÏÖÜÇ".toCharArray();
-    public static char swapChar(char c, char[] array, boolean bool, int num){
-        if(bool)
-            for(int i = 0; i < array.length; i++){
-                if(c == array[i])
-                    return ((i + num < array.length) ? array[i + num] : array[i - array.length + num]);
+    public char swapChar(char c, char[] array, boolean bool, int num) {
+        num = num % array.length; // Ensure num is within the bounds of the array length
+        if (bool) {
+            for (int i = 0; i < array.length; i++) {
+                if (c == array[i]) {
+                    return ((i + num < array.length) ? array[i + num] : array[i + num - array.length]);
+                }
             }
-        else
-            for(int o = array.length - 1; o >= 0; o--){
-                if(c == array[o])
-                    return ((o - num >= 0) ? array[o - num] : array[o + array.length - num]);
+        } else {
+            for (int o = array.length - 1; o >= 0; o--) {
+                if (c == array[o]) {
+                    return ((o - num >= 0) ? array[o - num] : array[o - num + array.length]);
+                }
             }
-        return (c);
+        }
+        return c;
     }
-    public static StringBuffer xifraRot13(String message, int num){
+
+    public StringBuffer xifraRotX(String message, int num) {
         StringBuffer newString = new StringBuffer();
-        for(int i = 0; i < message.length(); i++){
+        for (int i = 0; i < message.length(); i++) {
             newString.append((Character.isUpperCase(message.charAt(i))) ? swapChar(message.charAt(i), arrayCharUpper, true, num) : swapChar(message.charAt(i), arrayChar, true, num));
         }
-        return (newString);
+        return newString;
     }
-    public static StringBuffer desxifraRot13(String message, int num){
+
+    public StringBuffer desxifraRotX(String message, int num) {
         StringBuffer newString = new StringBuffer();
-        for(int i = 0; i < message.length(); i++){
+        for (int i = 0; i < message.length(); i++) {
             newString.append((Character.isUpperCase(message.charAt(i))) ? swapChar(message.charAt(i), arrayCharUpper, false, num) : swapChar(message.charAt(i), arrayChar, false, num));
         }
-        return (newString);
+        return newString;
     }
-    public static void test(String args[]){
-        String test = (args.length >= 1) ? args[0] : "TEST: Bon Dia";
-        int num = (args.length >= 2 && args[1] != null && args[1].matches("[0-9]+") && Integer.parseInt(args[1])<= arrayChar.length-1) ? Integer.parseInt(args[1]) : 13;
-        test = xifraRot13(test, num).toString();
-        System.out.println(test);
-        System.out.println(desxifraRot13(test, num).toString()+"\n");
+
+    @Override
+    public TextXifrat xifra(String msg, String clau) throws ClauNoSuportada {
+        try {
+            int num = Integer.parseInt(clau);
+            if (num < 0 || num > 40) {
+                throw new ClauNoSuportada("Clau de RotX ha de ser un sencer de 0 a 40");
+            }
+            return new TextXifrat(xifraRotX(msg, num).toString().getBytes());
+        } catch (NumberFormatException e) {
+            throw new ClauNoSuportada("Clau de RotX ha de ser un sencer de 0 a 40");
+        } catch (Exception e) {
+            throw new ClauNoSuportada("Error a l'encriptar: " + e.getMessage());
+        }
     }
+
+    @Override
+    public String desxifra(TextXifrat xifrat, String clau) throws ClauNoSuportada {
+        try {
+            int num = Integer.parseInt(clau);
+            if (num < 0 || num > 40) {
+                throw new ClauNoSuportada("Clau de RotX ha de ser un sencer de 0 a 40");
+            }
+            return desxifraRotX(new String(xifrat.getBytes()), num).toString();
+        } catch (NumberFormatException e) {
+            throw new ClauNoSuportada("Clau de RotX ha de ser un sencer de 0 a 40");
+        } catch (Exception e) {
+            throw new ClauNoSuportada("Error al desencriptar: " + e.getMessage());
+        }
+    }
+
+    /*
     public static void forcaBrutaRotX(String args[]){
         String test = (args.length >= 1) ? args[0] : "TEST: Bon Dia";
         for(int num = 0; num <= arrayChar.length-1; num++){
@@ -49,5 +80,5 @@ public class XifradorRotX implements Xifrador{
             forcaBrutaRotX(args);
         else
             test(args);
-    }
+    }*/
 }

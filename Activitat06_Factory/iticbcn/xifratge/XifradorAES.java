@@ -13,17 +13,17 @@ public class XifradorAES implements Xifrador{
     private static byte[] iv = new byte[MIDA_IV];
     private static final String CLAU = "No hi ha guifi";
 
-    public static IvParameterSpec generateIv() {
+    public  IvParameterSpec generateIv() {
         new SecureRandom().nextBytes(iv);
         return new IvParameterSpec(iv);
     }
 
-    public static byte[] generateHash(String input) throws NoSuchAlgorithmException {
+    public byte[] generateHash(String input) throws NoSuchAlgorithmException {
         MessageDigest digest = MessageDigest.getInstance(ALGORISME_HASH);
         return digest.digest(input.getBytes());
     }
 
-    public static byte[] xifraAES(String msg, String clau) throws Exception {
+    public byte[] xifraAES(String msg, String clau) throws Exception {
         byte[] textBytes = msg.getBytes();
         IvParameterSpec iv = generateIv();
         byte[] keyBytes = generateHash(clau);
@@ -37,7 +37,7 @@ public class XifradorAES implements Xifrador{
         return encryptedMessage;
     }
 
-    public static String desxifraAES (byte[] bIvIMsgXifrat , String clau) throws Exception {
+    public String desxifraAES (byte[] bIvIMsgXifrat , String clau) throws Exception {
         System.arraycopy(bIvIMsgXifrat, 0, iv, 0, iv.length);
         IvParameterSpec ivParameterSpec = new IvParameterSpec(iv);
         byte[] encryptedBytes = new byte[bIvIMsgXifrat.length - iv.length];
@@ -49,8 +49,29 @@ public class XifradorAES implements Xifrador{
         byte[] decryptedBytes = cipher.doFinal(encryptedBytes);
         return new String(decryptedBytes);
     }
+    @Override
+    public TextXifrat xifra(String msg, String clau) throws ClauNoSuportada{
+        try {
+            return new TextXifrat(xifraAES(msg, clau));
+        } catch (Exception e) {
+            System.err.println("Error a l'esencriptar: " + e.getMessage());
+            System.exit(1);
+            return null;
+        }
+    }
 
-    public static void main(String[] args) {
+    @Override
+    public String desxifra(TextXifrat xifrat, String clau) throws ClauNoSuportada {
+        try {
+            return desxifraAES(xifrat.getBytes(), clau);
+            
+        } catch (Exception e) {
+            System.err.println("Error al desencriptar: " + e.getMessage());
+            System.exit(1);
+            return null;
+        }
+    }
+    /*public void main(String[] args) {
         String msgs[] = {"Lorem ipsum dicet","Hola Andrés cómo está tu cuñado","Àgora ïlla Ôtto"};
             for (int i = 0; i < msgs.length; i++) {
                 String msg = msgs[i];
@@ -68,5 +89,5 @@ public class XifradorAES implements Xifrador{
                 System.out.println("Enc: " + new String(bXifrats));
                 System.out.println("DEC: " + desxifrat);
             }
-    }
+    }*/
 }

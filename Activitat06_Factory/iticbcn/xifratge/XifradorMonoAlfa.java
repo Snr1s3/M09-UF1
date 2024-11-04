@@ -6,57 +6,80 @@ import java.util.ArrayList;
 
 public class XifradorMonoAlfa implements Xifrador{
     public final static char[] arrayChar = "abcdefghijklmnopqrstuvwxyzñáéíóúüàèìòùâêîôûäëïöüç".toCharArray();
-    public static char[] permutaAlfabet(){
+    public static char[] shuffledArray;
+
+    public XifradorMonoAlfa() {
+        permutaAlfabet();
+    }
+    public void permutaAlfabet(){
         List<Character> charList = new ArrayList<>();
         for (char c : arrayChar) {
             charList.add(c);
         }
         Collections.shuffle(charList);
-        char[] shuffledArray = new char[charList.size()];
+        shuffledArray = new char[charList.size()];
         for (int i = 0; i < charList.size(); i++) {
             shuffledArray[i] = charList.get(i);
         }
-        return (shuffledArray);
     } 
-    public static char swapChar(char c, char[] shuffled, boolean bool){
-        if(bool)
-            for(int i = 0; i < arrayChar.length; i++){
-                if(c == arrayChar[i])
-                    return (shuffled[i]);
-            }
-        else
-            for(int o = shuffled.length - 1; o >= 0; o--){
-                if(c == shuffled[o])
-                    return (arrayChar[o]);
-            }
+    public char swapChar(char c){
+        for(int i = 0; i < arrayChar.length; i++){
+            if(c == arrayChar[i])
+                return (shuffledArray[i]);
+        }
         return (c);
     }
-    public static String xifraMonoAlfa(String message, char[] shuffledArray){
+    public String xifraMonoAlfa(String message){
         StringBuffer newString = new StringBuffer();
         for(int i = 0; i < message.length(); i++){
             char c = message.charAt(i);
             if(Character.isUpperCase(c)){
-                newString.append(Character.toUpperCase(swapChar(Character.toLowerCase(c), shuffledArray, true)));
+                newString.append(Character.toUpperCase(swapChar(Character.toLowerCase(c))));
             }
             else{
-                newString.append(swapChar(c, shuffledArray, true));
+                newString.append(swapChar(c));
             }
         }
         return (newString.toString());
     }
-    public static String desxifraMonoAlfa(String message, char[] shuffledArray){
+    public String desxifraMonoAlfa(String message){
         StringBuffer newString = new StringBuffer();
         for(int i = 0; i < message.length(); i++){
             char c = message.charAt(i);
             if(Character.isUpperCase(c)){
-                newString.append(Character.toUpperCase(swapChar(Character.toLowerCase(c), shuffledArray, false)));
+                newString.append(Character.toUpperCase(swapChar(Character.toLowerCase(c))));
             }
             else{
-                newString.append(swapChar(c, shuffledArray, false));
+                newString.append(swapChar(c));
             }
         }
         return (newString.toString());
     }
+
+    @Override
+    public TextXifrat xifra(String msg, String clau) throws ClauNoSuportada{
+        if(clau != null){
+            throw new ClauNoSuportada("Xifratxe monoalfabètic no suporta clau != null");
+        }
+        try {
+            return new TextXifrat(xifraMonoAlfa(msg).getBytes());
+        } catch (Exception e) {
+            throw new ClauNoSuportada("Error a l'encriptar: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public String desxifra(TextXifrat xifrat, String clau) throws ClauNoSuportada {
+        if(clau != null){
+            throw new ClauNoSuportada("Xifratxe monoalfabètic no suporta clau != null");
+        }
+        try {
+            return desxifraMonoAlfa(new String(xifrat.getBytes()));
+        } catch (Exception e) {
+            throw new ClauNoSuportada("Error al desencriptar: " + e.getMessage());
+        }
+    }
+    /*
     public static void main(String args[]){
         String test = (args.length == 1) ? args[0] : "TEST: Bon Dia";
         char[] shuffledArray = permutaAlfabet();
@@ -64,5 +87,5 @@ public class XifradorMonoAlfa implements Xifrador{
         System.out.println(test);
         test = desxifraMonoAlfa(test, shuffledArray);
         System.out.println(test);
-    }
+    }*/
 }

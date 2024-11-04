@@ -11,11 +11,13 @@ public class XifradorPoliAlfabetic implements Xifrador{
     public static Long clauSecreta = 123456789L;
     public static Random random; 
 
-
-    public static void initRandom(){
-        random = new Random(clauSecreta);
+    public XifradorPoliAlfabetic() {
+        initRandom();
+    }
+    public void initRandom(){
+        random = new Random();
     } 
-    public static char[] permutaAlfabet(char[] shuffled){
+    public char[] permutaAlfabet(char[] shuffled){
         List<Character> charList = new ArrayList<>();
         for (char c : shuffled) {
             charList.add(c);
@@ -29,51 +31,72 @@ public class XifradorPoliAlfabetic implements Xifrador{
         //System.out.println();
         return (shuffledArray);
     } 
-    public static char swapChar(char c, char[] shuffled, boolean bool){
-        if(bool)
-            for(int i = 0; i < arrayChar.length; i++){
-                if(c == arrayChar[i])
-                    return (shuffled[i]);
-            }
-        else
-            for(int o = shuffled.length - 1; o >= 0; o--){
-                if(c == shuffled[o])
-                    return (arrayChar[o]);
-            }
+    public char swapChar(char c, char[] shuffled){
+        for(int i = 0; i < arrayChar.length; i++){
+            if(c == arrayChar[i])
+                return (shuffled[i]);
+        }
         return (c);
     }
-    public static String xifraPoliAlfa(String message){
+    public String xifraPoliAlfa(String message){
         char[] shuffledArray = permutaAlfabet(arrayChar);
         StringBuffer newString = new StringBuffer();
         for(int i = 0; i < message.length(); i++){
             char c = message.charAt(i);
             if(Character.isUpperCase(c)){
-                newString.append(Character.toUpperCase(swapChar(Character.toLowerCase(c), shuffledArray, true)));
+                newString.append(Character.toUpperCase(swapChar(Character.toLowerCase(c), shuffledArray)));
             }
             else{
-                newString.append(swapChar(c, shuffledArray, true));
+                newString.append(swapChar(c, shuffledArray));
             }
             shuffledArray = permutaAlfabet(shuffledArray);
         }
         return (newString.toString());
     }
-    public static String desxifraPoliAlfa(String message){
+    public String desxifraPoliAlfa(String message){
         char[] shuffledArray = permutaAlfabet(arrayChar);
         StringBuffer newString = new StringBuffer();
         for(int i = 0; i < message.length(); i++){
             char c = message.charAt(i);
             if(Character.isUpperCase(c)){
-                newString.append(Character.toUpperCase(swapChar(Character.toLowerCase(c), shuffledArray, false)));
+                newString.append(Character.toUpperCase(swapChar(Character.toLowerCase(c), shuffledArray)));
             }
             else{
-                newString.append(swapChar(c, shuffledArray, false));
+                newString.append(swapChar(c, shuffledArray));
             }
             shuffledArray = permutaAlfabet(shuffledArray);
         }
         return (newString.toString());
     }
 
-    public static void main ( String [] args ) {
+    @Override
+    public TextXifrat xifra(String msg, String clau) throws ClauNoSuportada {
+        try {
+            clauSecreta = Long.parseLong(clau);
+            random.setSeed(clauSecreta);
+            String encrypted = xifraPoliAlfa(msg);
+            return new TextXifrat(encrypted.getBytes());
+        } catch (NumberFormatException e) {
+            throw new ClauNoSuportada("La clau per xifrat Polialfabètic ha de ser un String convertible a long");
+        } catch (Exception e) {
+            throw new ClauNoSuportada("Error a l'encriptar: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public String desxifra(TextXifrat xifrat, String clau) throws ClauNoSuportada {
+        try {
+            clauSecreta = Long.parseLong(clau);
+            random.setSeed(clauSecreta);
+            String decrypted = desxifraPoliAlfa(new String(xifrat.getBytes()));
+            return decrypted;
+        } catch (NumberFormatException e) {
+            throw new ClauNoSuportada("La clau de Polialfabètic ha de ser un String convertible a long");
+        } catch (Exception e) {
+            throw new ClauNoSuportada("Error al desencriptar: " + e.getMessage());
+        }
+    }
+    /*public static void main ( String [] args ) {
         String msgs[] = { "Test 01 àrbritre, coixí, Perímetre" ,
             "Test 02 Taüll, DÍA, año" ,
             "Test 03 Peça, Òrrius, Bòvila" };
@@ -90,5 +113,5 @@ public class XifradorPoliAlfabetic implements Xifrador{
             String msg = desxifraPoliAlfa ( msgsXifrats [ i ]);
             System . out . printf ( "%-34s -> %s%n", msgsXifrats [ i ], msg);
         }
-    }
+    }*/
 }
