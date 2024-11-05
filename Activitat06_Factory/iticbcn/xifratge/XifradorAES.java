@@ -11,7 +11,6 @@ public class XifradorAES implements Xifrador{
 
     private static final int MIDA_IV = 16;
     private static byte[] iv = new byte[MIDA_IV];
-    private static final String CLAU = "No hi ha guifi";
 
     public  IvParameterSpec generateIv() {
         new SecureRandom().nextBytes(iv);
