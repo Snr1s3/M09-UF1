@@ -29,11 +29,13 @@ public class ClauPublica {
         return encryptedBytes;
     }
     public String desxifraRSA(byte[] msgXifrat, PrivateKey clauPrivada)throws Exception{
-        String msgDesxifrat = null;
+        //Desxifrar amb RSA
         Cipher cipher = Cipher.getInstance("RSA");
+        //Inicialitzar desxifrat amb clau privada
         cipher.init(Cipher.DECRYPT_MODE, clauPrivada);
-        byte[] decryptedBytes = cipher.doFinal(msgXifrat);        
-        msgDesxifrat = new String(decryptedBytes);
-        return msgDesxifrat;
+        //Missatge desxifrat
+        byte[] decryptedBytes = cipher.doFinal(msgXifrat);  
+        //Retornar missatge desxifrat      
+        return new String(decryptedBytes);
     }
 }
