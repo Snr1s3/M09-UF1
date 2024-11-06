@@ -1,0 +1,3 @@
+Pasos
+• També crea public byte[] xifraRSA(String msg, PublicKey clauPublica)throws Exception
+• També public String desxifraRSA(byte[] msgXifrat, PrivateKey ClauPrivada)
