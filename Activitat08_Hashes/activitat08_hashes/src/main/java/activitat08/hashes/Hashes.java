@@ -76,8 +76,72 @@ public class Hashes {
     }
 
 
-    public List<String> getCombinacions() {
-        
+    public List<List<String>> getCombinacions() {
+        long t1 = System.currentTimeMillis();
+        List<List<String>> combinacions = new ArrayList<>();
+        List<String> combinacions1 = new ArrayList<>();
+        for(char ca : arrayChar){
+            combinacions1.add(String.valueOf(ca));
+        }
+        List<String> combinacions2 = new ArrayList<>();
+        for(char cb : arrayChar){
+            for(char c1 : arrayChar){
+                combinacions2.add(cb+ ""+c1);                
+            }
+        }
+        List<String> combinacions3 = new ArrayList<>();
+        for(char cc : arrayChar){
+            for(char c2 : arrayChar){
+                for(char c1 : arrayChar){
+                    combinacions3.add(cc+ ""+ c2 + ""+ c1);                
+                }
+            }
+        }
+        List<String> combinacions4 = new ArrayList<>();
+        for(char cd : arrayChar){
+            for(char c3 : arrayChar){
+                for(char c2 : arrayChar){
+                    for(char c1 : arrayChar){
+                        combinacions4.add(cd+ ""+ c3+ ""+ c2+ "" + c1);                
+                    }
+                }
+            }
+        }
+        List<String> combinacions5 = new ArrayList<>();
+        for(char ce : arrayChar){
+            for(char c4 : arrayChar){
+                for(char c3 : arrayChar){
+                    for(char c2 : arrayChar){
+                        for(char c1 : arrayChar){
+                            combinacions5.add(ce+ ""+ c4+ ""+ c3+ ""+ c2 + ""+ c1);                
+                        }
+                    }
+                }
+            }
+        }
+        List<String> combinacions6 = new ArrayList<>();
+        for(char cf : arrayChar){
+            for(char c5 : arrayChar){
+                for(char c4 : arrayChar){
+                    for(char c3 : arrayChar){
+                        for(char c2 : arrayChar){
+                            for(char c1 : arrayChar){
+                                combinacions6.add(cf+ ""+ c5+ ""+ c4+ ""+ c3+ ""+ c2+ "" + c1);                
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        combinacions.add(combinacions1);
+        combinacions.add(combinacions2);
+        combinacions.add(combinacions3);
+        combinacions.add(combinacions4);
+        combinacions.add(combinacions5);
+        combinacions.add(combinacions6);
+        long t2 = System.currentTimeMillis();
+        System.out.println("Temps: " + getInterval(t1, t2));
+        return combinacions;
     }
     public String getInterval(long t1, long t2) {
         long interval = Math.abs(t2 - t1);
