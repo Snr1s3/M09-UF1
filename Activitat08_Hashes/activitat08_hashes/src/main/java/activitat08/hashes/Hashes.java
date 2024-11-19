@@ -7,12 +7,12 @@ import java.security.spec.InvalidKeySpecException;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Hashes {
     public final char[] arrayChar = "abcdefABCDEF1234567890!".toCharArray();
     public int npass = 0;
+
+    public Hashes() {}
+
     public String getSHA512AmbSalt(String pw, String salt) {
         try {
             // Obtenir els Bytes de la contrasenya i el salt
@@ -65,98 +65,74 @@ public class Hashes {
         return sb.toString();
     }
 
-    public String forcaBruta(String alg, String hash, String salt) {
-        StringBuilder sb = new StringBuilder();
-        int nChar = -1;
-        int counter = 0;
-        
-        
-        
-        return null;
-    }
-
-
-    public List<List<String>> getCombinacions() {
-        long t1 = System.currentTimeMillis();
-        List<List<String>> combinacions = new ArrayList<>();
-        List<String> combinacions1 = new ArrayList<>();
-        for(char ca : arrayChar){
-            combinacions1.add(String.valueOf(ca));
-        }
-        List<String> combinacions2 = new ArrayList<>();
-        for(char cb : arrayChar){
-            for(char c1 : arrayChar){
-                combinacions2.add(cb+ ""+c1);                
+    public String forcaBruta(String alg, String hash, String salt) {     
+        npass = 0;   
+        for(char c1 : arrayChar){
+            String comb1 = c1 + "";
+            npass++;
+            System.out.println(npass);
+            if(getCombinacions( alg,  hash, comb1, salt)){
+                return comb1;
             }
-        }
-        List<String> combinacions3 = new ArrayList<>();
-        for(char cc : arrayChar){
             for(char c2 : arrayChar){
-                for(char c1 : arrayChar){
-                    combinacions3.add(cc+ ""+ c2 + ""+ c1);                
+                String comb2 = "" + c1 + c2;
+                npass++;
+                System.out.println(npass);
+                if(getCombinacions( alg,  hash, comb2, salt)){
+                    return comb2;
                 }
-            }
-        }
-        List<String> combinacions4 = new ArrayList<>();
-        for(char cd : arrayChar){
-            for(char c3 : arrayChar){
-                for(char c2 : arrayChar){
-                    for(char c1 : arrayChar){
-                        combinacions4.add(cd+ ""+ c3+ ""+ c2+ "" + c1);                
-                    }
-                }
-            }
-        }
-        List<String> combinacions5 = new ArrayList<>();
-        for(char ce : arrayChar){
-            for(char c4 : arrayChar){
                 for(char c3 : arrayChar){
-                    for(char c2 : arrayChar){
-                        for(char c1 : arrayChar){
-                            combinacions5.add(ce+ ""+ c4+ ""+ c3+ ""+ c2 + ""+ c1);                
-                        }
+                    String comb3 = "" + c1 + c2 + c3;
+                    npass++;
+                    System.out.println(npass);
+                    if(getCombinacions( alg,  hash, comb3, salt)){
+                        return comb3;
                     }
-                }
-            }
-        }
-        List<String> combinacions6 = new ArrayList<>();
-        for(char cf : arrayChar){
-            for(char c5 : arrayChar){
-                for(char c4 : arrayChar){
-                    for(char c3 : arrayChar){
-                        for(char c2 : arrayChar){
-                            for(char c1 : arrayChar){
-                                combinacions6.add(cf+ ""+ c5+ ""+ c4+ ""+ c3+ ""+ c2+ "" + c1);                
+                    for(char c4 : arrayChar){
+                        String comb4 = "" + c1 + c2 + c3 + c4;
+                        npass++;
+                        System.out.println(npass);
+                        if(getCombinacions( alg,  hash, comb4, salt)){
+                            return comb4;
+                        }
+                        for(char c5 : arrayChar){
+                            String comb5 = "" + c1 + c2 + c3  + c4 + c5;
+                            npass++;
+                            System.out.println(npass);
+                            if(getCombinacions( alg,  hash, comb5, salt)){
+                                return comb5;
+                            }
+                            for(char c6 : arrayChar){
+                                String comb6 = "" + c1 + c2 +c3 + c4 + c5 + c6;     
+                                npass++;
+                                System.out.println(npass);
+                                if(getCombinacions( alg,  hash, comb6, salt)){
+                                    return comb6;
+                                }           
                             }
                         }
                     }
                 }
             }
         }
-        combinacions.add(combinacions1);
-        combinacions.add(combinacions2);
-        combinacions.add(combinacions3);
-        combinacions.add(combinacions4);
-        combinacions.add(combinacions5);
-        combinacions.add(combinacions6);
-        long t2 = System.currentTimeMillis();
-        System.out.println("Temps: " + getInterval(t1, t2));
-        return combinacions;
+        return null;
     }
+    public Boolean getCombinacions(String alg, String hash, String comb, String salt) {
+        if(alg.equals("SHA-512")){
+            return getSHA512AmbSalt(comb, salt).equals(hash);
+        }else if(alg.equals("PBKDF2")){
+            return getPBKDF2AmbSalt(comb, salt).equals(hash);
+        }
+        return null;
+    }
+
     public String getInterval(long t1, long t2) {
         long interval = Math.abs(t2 - t1);
-
-        long milliseconds = interval % 1000;
-        long seconds = (interval / 1000) % 60;
-        long minutes = (interval / (1000 * 60)) % 60;
-        long hours = (interval / (1000 * 60 * 60)) % 24;
-        long days = interval / (1000 * 60 * 60 * 24);
-
-        return String.format("%d days, %02d hours, %02d minutes, %02d seconds, %03d milliseconds",
-                days, hours, minutes, seconds, milliseconds);
-    }
-    public static void main(String[] args) {
-        Hashes hashes = new Hashes();
-        hashes.getCombinacions();
+        long m = interval % 1000;
+        long s = (interval / 1000) % 60;
+        long min = (interval / (1000 * 60)) % 60;
+        long h = (interval / (1000 * 60 * 60)) % 24;
+        long d = interval / (1000 * 60 * 60 * 24);
+        return String.format("%d dies, %02d hores, %02d minuts, %02d segons, %03d mil·lisegons",  d, h, min, s, m);
     }
 }
