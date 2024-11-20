@@ -6,8 +6,6 @@ import java.security.spec.InvalidKeySpecException;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Hashes {
     public final char[] arrayChar = "abcdefABCDEF1234567890!".toCharArray();
