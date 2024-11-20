@@ -3,7 +3,7 @@ package activitat08.hashes;
 public class Main {
     public static void main(String[] args) throws Exception {
         String salt = "qpoweiruañslkdfjz";
-        String pw = "1234";
+        String pw = "a";
         Hashes h = new Hashes();
         String[] aHashes = { h.getSHA512AmbSalt(pw, salt),
         h.getPBKDF2AmbSalt(pw, salt) };

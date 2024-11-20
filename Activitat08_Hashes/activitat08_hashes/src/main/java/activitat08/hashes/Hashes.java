@@ -67,41 +67,48 @@ public class Hashes {
 
     public String forcaBruta(String alg, String hash, String salt) {     
         npass = 0;   
+        StringBuilder sb = new StringBuilder();
         for(char c1 : arrayChar){
-            String comb1 = c1 + "";
             npass++;
-            if(getCombinacions( alg,  hash, comb1, salt)){
-                return comb1;
+            sb.setLength(0);
+            sb.append(c1);
+            if(getCombinacions( alg,  hash, sb.toString(), salt)){
+                return sb.toString();
             }
             for(char c2 : arrayChar){
-                String comb2 = "" + c1 + c2;
                 npass++;
-                if(getCombinacions( alg,  hash, comb2, salt)){
-                    return comb2;
+                sb.setLength(1);
+                sb.append(c2);
+                if(getCombinacions( alg,  hash, sb.toString(), salt)){
+                    return sb.toString();
                 }
                 for(char c3 : arrayChar){
-                    String comb3 = "" + c1 + c2 + c3;
                     npass++;
-                    if(getCombinacions( alg,  hash, comb3, salt)){
-                        return comb3;
+                    sb.setLength(2);
+                    sb.append(c3);
+                    if(getCombinacions( alg,  hash, sb.toString(), salt)){
+                        return sb.toString();
                     }
                     for(char c4 : arrayChar){
-                        String comb4 = "" + c1 + c2 + c3 + c4;
                         npass++;
-                        if(getCombinacions( alg,  hash, comb4, salt)){
-                            return comb4;
+                        sb.setLength(3);
+                        sb.append(c4);
+                        if(getCombinacions( alg,  hash, sb.toString(), salt)){
+                            return sb.toString();
                         }
                         for(char c5 : arrayChar){
-                            String comb5 = "" + c1 + c2 + c3  + c4 + c5;
                             npass++;
-                            if(getCombinacions( alg,  hash, comb5, salt)){
-                                return comb5;
+                            sb.setLength(4);
+                            sb.append(c5);
+                            if(getCombinacions( alg,  hash, sb.toString(), salt)){
+                                return sb.toString();
                             }
-                            for(char c6 : arrayChar){
-                                String comb6 = "" + c1 + c2 +c3 + c4 + c5 + c6;     
+                            for(char c6 : arrayChar){     
                                 npass++;
-                                if(getCombinacions( alg,  hash, comb6, salt)){
-                                    return comb6;
+                                sb.setLength(5);
+                                sb.append(c6);
+                                if(getCombinacions( alg,  hash,sb.toString(), salt)){
+                                    return sb.toString();
                                 }           
                             }
                         }
