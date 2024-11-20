@@ -131,37 +131,4 @@ public class Hashes {
         long d = interval / (1000 * 60 * 60 * 24);
         return String.format("%d dies, %02d hores, %02d minuts, %02d segons, %03d mil·lisegons",  d, h, min, s, m);
     }
-
-    public String forcaBruta2() {     
-        List<String> combinacions = new ArrayList<>();
-        for(char c1 : arrayChar){
-            String comb1 = "" + c1;
-            combinacions.add(comb1);
-            for(char c2 : arrayChar){
-                String comb2 = "" + c1 + c2;
-                combinacions.add(comb2);    
-                for(char c3 : arrayChar){
-                    String comb3 = "" + c1 + c2 + c3;
-                    combinacions.add(comb3);
-                    for(char c4 : arrayChar){
-                        String comb4 = "" + c1 + c2 + c3 + c4;
-                        combinacions.add(comb4);
-                        for(char c5 : arrayChar){
-                            String comb5 = "" + c1 + c2 + c3  + c4 + c5;
-                            combinacions.add(comb5);
-                            for(char c6 : arrayChar){
-                                String comb6 = "" + c1 + c2 +c3 + c4 + c5 + c6;
-                                combinacions.add(comb6);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return null;
-    }
-    public static void main(String[] args) {
-        Hashes h = new Hashes();
-        h.forcaBruta2() ;
-    }
 }
